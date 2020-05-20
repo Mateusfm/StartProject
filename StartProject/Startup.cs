@@ -48,6 +48,13 @@ namespace StartProject
                         ObrigatorioLowerCase = true
                     };
 
+                    userManager.EmailService = new EmailServico();
+
+                    var dataProtectionProvider = opcoes.DataProtectionProvider;
+                    var dataProtectionProviderCreated = dataProtectionProvider.Create("AppStart");
+
+                    userManager.UserTokenProvider = new DataProtectorTokenProvider<UsuarioAplicacao>(dataProtectionProviderCreated);
+
                     return userManager;
                 });
         }

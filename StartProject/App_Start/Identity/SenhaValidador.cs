@@ -45,7 +45,7 @@ namespace StartProject.App_Start.Identity
             senha?.Length >= TamanhoRequerido;
 
         private bool TemCaracteresEspeciais(string senha) =>
-            Regex.IsMatch(senha, "/[^0-9A-Za-z]*/");
+            Regex.IsMatch(senha, "(?=.*?[#?!@$%^&*-])");
 
         private bool VerificaLowerCase(string senha) =>
             senha.Any(char.IsLower);

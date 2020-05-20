@@ -50,23 +50,48 @@ namespace StartProject.Controllers.Conta
                 novoUsuario.UserName = modelo.UserName;
                 novoUsuario.NomeCompleto = modelo.NomeCompleto;
 
-                var usuario = await UserManager.FindByEmailAsync(modelo.Email);
-                var usuarioJaExiste = usuario != null;
+                var usuarioDoBanco = await UserManager.FindByEmailAsync(modelo.Email);
+                var usuarioJaExiste = usuarioDoBanco != null;
 
                 if (usuarioJaExiste)
-                    return RedirectToAction("Index", "Home");
+                    return View("AguardandoConfirmacao");
 
 
 
                 var resultado = await UserManager.CreateAsync(novoUsuario, modelo.Senha);
 
                 if (resultado.Succeeded)
-                    return RedirectToAction("Index", "Home");
+                {
+                    await EnviarEmailDeconfirmacaoAsync(novoUsuario);
+                    return View("AguardandoConfirmacao");
+                }                    
                 else
                     AdicionaErros(resultado);
 
             }
             return View();
+        }
+
+        private async Task EnviarEmailDeconfirmacaoAsync(UsuarioAplicacao usuario)
+        {
+            var token = await UserManager.GenerateEmailConfirmationTokenAsync(usuario.Id);
+
+            var linkCallBack = Url.Action(
+                "ConfirmacaoEmail"
+                , "Conta"
+                , new {usuarioId = usuario.Id, token = token }
+                , Request.Url.Scheme
+                );
+
+            await UserManager.SendEmailAsync(
+                usuario.Id
+                , "Email de confirmação para novo cadastro"
+                , $"Clique aqui {linkCallBack} para confirmar seu e-mail!");
+        }
+
+        public ActionResult ConfirmacaoEmail(string usuarioId, string token)
+        {
+            return View("AguardandoConfirmacao");
         }
 
         private void AdicionaErros(IdentityResult resultado)
