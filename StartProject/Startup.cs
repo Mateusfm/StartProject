@@ -19,11 +19,16 @@ namespace StartProject
     {
         public void Configuration(IAppBuilder builder)
         {
+            ConfiguracaoUsuario(builder);
+        }
+
+        private static void ConfiguracaoUsuario(IAppBuilder builder)
+        {
             builder.CreatePerOwinContext<DbContext>(() =>
-                new IdentityDbContext<UsuarioAplicacao>("DefaultConnection"));
+                            new IdentityDbContext<UsuarioAplicacao>("DefaultConnection"));
 
             builder.CreatePerOwinContext<IUserStore<UsuarioAplicacao>>(
-                (opcoes, contextoOwin) => 
+                (opcoes, contextoOwin) =>
                 {
                     var dbContext = contextoOwin.Get<DbContext>();
                     return new UserStore<UsuarioAplicacao>(dbContext);

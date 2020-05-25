@@ -75,3 +75,5 @@ _[Ss]cripts
 *.dot[Cc]over
 
 .vs/StartProject/v15/Server/
+Database
+*config
