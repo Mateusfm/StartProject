@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Martins.Infrastructure.Repositories.Standard.EFCore
 {
-    class DomainRepository<TEntity> : RepositoryAsync<TEntity>,
+    public class DomainRepository<TEntity> : RepositoryAsync<TEntity>,
                                          IDomainRepository<TEntity> where TEntity : class, IIdentityEntity
     {
         protected DomainRepository(DbContext dbContext) : base(dbContext)

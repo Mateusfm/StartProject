@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Martins.Infrastructure.Repositories.Standard.EFCore
 {
-    class RepositoryAsync<TEntity> : SpecificMethods<TEntity>, IRepositoryAsync<TEntity> where TEntity : class, IIdentityEntity
+    public class RepositoryAsync<TEntity> : SpecificMethods<TEntity>, IRepositoryAsync<TEntity> where TEntity : class, IIdentityEntity
     {
         protected readonly DbContext dbContext;
         protected readonly DbSet<TEntity> dbSet;
